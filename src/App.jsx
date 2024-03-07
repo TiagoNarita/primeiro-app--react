@@ -1,23 +1,41 @@
-import Nome from "./nome";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function App() {
-    const [aluno, setAluno] = useState("Sujeito Programador");
+    const [works, setWork] = useState(["tirar o lixo", "estudar programação"]);
+    const [input, setInput] = useState("");
 
-    function HandleChangeName(nome) {
-        setAluno(nome);
-    }
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setWork([...works, input]);
+        setInput("");
+    };
 
     return (
         <div>
-            <h1>Componente App</h1>
-            <br />
-            <h2>Olá: {aluno}</h2>
-            <button onClick={() => HandleChangeName("safadinho")}>
-                Mudar Nome
-            </button>
+            <form onSubmit={handleSubmit}>
+                <label>Digite uma tarefa para adicona</label>
+                <br />
+                <input
+                    type="text"
+                    placeholder="Digite aqui"
+                    value={input}
+                    onChange={(e) => {
+                        setInput(e.target.value);
+                    }}
+                />
+                <br />
+                <button type="submit">enviar</button>
+                <br />
+                <br />
+            </form>
+            <div>
+                <ul>
+                    {works.map((work) => (
+                        <li key={work}>{work}</li>
+                    ))}
+                </ul>
+            </div>
         </div>
     );
 }
-
 export default App;
