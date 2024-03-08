@@ -4,6 +4,18 @@ function App() {
     const [works, setWork] = useState(["tirar o lixo", "estudar programação"]);
     const [input, setInput] = useState("");
 
+    useEffect(() => {
+        localStorage.setItem("@tarefas", JSON.stringify(works));
+    }, [works]);
+
+    useEffect(() => {
+        const tarefasStorage = localStorage.getItem("@tarefas");
+
+        if (tarefasStorage) {
+            setWork(JSON.parse(tarefasStorage));
+        }
+    }, []);
+
     const handleSubmit = (e) => {
         e.preventDefault();
         setWork([...works, input]);
