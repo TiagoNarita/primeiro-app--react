@@ -1,53 +1,42 @@
 import { useState, useEffect } from "react";
+import "./style.css";
 
-function App() {
-    const [works, setWork] = useState(["tirar o lixo", "estudar programação"]);
-    const [input, setInput] = useState("");
-
-    useEffect(() => {
-        localStorage.setItem("@tarefas", JSON.stringify(works));
-    }, [works]);
+export default function App() {
+    const [nutri, setNutri] = useState([]);
 
     useEffect(() => {
-        const tarefasStorage = localStorage.getItem("@tarefas");
-
-        if (tarefasStorage) {
-            setWork(JSON.parse(tarefasStorage));
+        function loadApi() {
+            let url = " https://sujeitoprogramador.com/rn-api/?api=posts";
+            fetch(url)
+                .then((r) => r.json())
+                .then((json) => {
+                    setNutri(json);
+                });
         }
+
+        loadApi();
     }, []);
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        setWork([...works, input]);
-        setInput("");
-    };
-
     return (
-        <div>
-            <form onSubmit={handleSubmit}>
-                <label>Digite uma tarefa para adicona</label>
-                <br />
-                <input
-                    type="text"
-                    placeholder="Digite aqui"
-                    value={input}
-                    onChange={(e) => {
-                        setInput(e.target.value);
-                    }}
-                />
-                <br />
-                <button type="submit">enviar</button>
-                <br />
-                <br />
-            </form>
-            <div>
-                <ul>
-                    {works.map((work) => (
-                        <li key={work}>{work}</li>
-                    ))}
-                </ul>
-            </div>
+        <div className="container">
+            <header>
+                <strong>React Nutri</strong>
+            </header>
+
+            {nutri.map((item) => {
+                return (
+                    <article key={item.id} className="post">
+                        <strong>{item.titulo}</strong>
+                        <img
+                            src={item.capa}
+                            alt={item.titulo}
+                            className="capa"
+                        />
+                        <p className="subtitulo">{item.subtitulo}</p>
+                        <a className="botao">acessar</a>
+                    </article>
+                );
+            })}
         </div>
     );
 }
-export default App;
