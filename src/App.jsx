@@ -26,7 +26,7 @@ export default function App() {
             {nutri.map((item) => {
                 return (
                     <article key={item.id} className="post">
-                        <strong>{item.titulo}</strong>
+                        <strong className="titulo">{item.titulo}</strong>
                         <img
                             src={item.capa}
                             alt={item.titulo}
